@@ -12,8 +12,8 @@ import org.lwjgl.opengl.DisplayMode;
 public class Game
 {
 
-	public static final int DISPLAY_WIDTH = 1280;
-	public static final int DISPLAY_HEIGHT = 720;
+	public static final int DISPLAY_WIDTH = 640;
+	public static final int DISPLAY_HEIGHT = 480;
 	private long lastFrame;
 	private int fps;
 	private long lastFPS;
@@ -106,8 +106,7 @@ public class Game
 		{
 			Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
 			Display.setTitle("Asteroids");
-			// Display.setVSyncEnabled(true);
-			Display.setFullscreen(true);
+			Display.setVSyncEnabled(true);
 			Display.create();
 		}
 		catch (Exception e)

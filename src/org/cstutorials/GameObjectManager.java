@@ -35,8 +35,12 @@ public class GameObjectManager
 
 		for (Map.Entry<String, VisibleObject> entry : iteratableGameObjects.entrySet())
 		{
-			Graphics.currentVertexHandle = entry.getValue().vertexHandle;
-			entry.getValue().render(g);
+			VisibleObject vo = entry.getValue();
+			Graphics.currentVertexHandle = vo.vertexHandle;
+			Graphics.numCoordinates = vo.numCoordinates;
+			Graphics.numPairVertices = vo.numPairVertices;
+			Graphics.vertexBuffer = vo.vertexBuffer;
+			vo.render(g);
 		}
 	}
 

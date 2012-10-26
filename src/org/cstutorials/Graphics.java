@@ -11,49 +11,34 @@ public class Graphics
 {
 
 	public static int currentVertexHandle;
+	public static int numPairVertices;
+	public static int numCoordinates;
+	public static FloatBuffer vertexBuffer;
 
 	public Graphics()
 	{
 	}
 
-	public void drawLine(float x1, float y1, float x2, float y2)
+	public void drawLines()
 	{
-		float[] vertices = { x1, y1, x2, y2 };
-		int numCoordinates = 2;
-		int numVertices = 2;
-
-		FloatBuffer vBuffer = BufferUtils.createFloatBuffer(vertices.length);
-		vBuffer.put(vertices);
-		vBuffer.flip();
-
 		glEnableClientState(GL_VERTEX_ARRAY);
 
 		glBindBuffer(GL_ARRAY_BUFFER, currentVertexHandle);
-		glBufferData(GL_ARRAY_BUFFER, vBuffer, GL_STATIC_DRAW);
 		glVertexPointer(numCoordinates, GL_FLOAT, 0, 0L);
-		glDrawArrays(GL_LINES, 0, numVertices);
+		glDrawArrays(GL_LINES, 0, numPairVertices);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glDisableClientState(GL_VERTEX_ARRAY);
 
 	}
 
-	public void drawQuad(float x, float y, float width, float height)
+	public void drawQuads()
 	{
-		float[] vertices = { x, y, x + width, y, x + width, y + height, x, y + height };
-		int numCoordinates = 2;
-		int numVertices = 4;
-
-		FloatBuffer vBuffer = BufferUtils.createFloatBuffer(vertices.length);
-		vBuffer.put(vertices);
-		vBuffer.flip();
-
 		glEnableClientState(GL_VERTEX_ARRAY);
 
 		glBindBuffer(GL_ARRAY_BUFFER, currentVertexHandle);
-		glBufferData(GL_ARRAY_BUFFER, vBuffer, GL_STATIC_DRAW);
 		glVertexPointer(numCoordinates, GL_FLOAT, 0, 0L);
-		glDrawArrays(GL_QUADS, 0, numVertices);
+		glDrawArrays(GL_QUADS, 0, numPairVertices);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glDisableClientState(GL_VERTEX_ARRAY);

@@ -1,5 +1,7 @@
 package org.cstutorials;
 
+import java.nio.FloatBuffer;
+
 // import org.newdawn.slick.Graphics;
 
 abstract public class VisibleObject
@@ -9,7 +11,11 @@ abstract public class VisibleObject
 	protected float y;
 	protected float width;
 	protected float height;
+
 	protected int vertexHandle;
+	protected FloatBuffer vertexBuffer;
+	protected int numCoordinates;
+	protected int numPairVertices;
 
 	public abstract void update(int delta);
 

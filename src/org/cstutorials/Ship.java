@@ -3,6 +3,7 @@ package org.cstutorials;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -25,11 +26,30 @@ public class Ship extends VisibleObject
 
 	public Ship()
 	{
-		this.name = "Player0";
-		this.x = Game.DISPLAY_WIDTH / 2;
-		this.y = Game.DISPLAY_HEIGHT / 3;
-		this.vertexHandle = glGenBuffers();
-		Game.gameObjectManager.add(this.name, this);
+		name = "Player0";
+		x = Game.DISPLAY_WIDTH / 2;
+		y = Game.DISPLAY_HEIGHT / 3;
+
+		Line[] lines = new Line[] { new Line(x, y - height / 4, x + width / 3, y + height / 4),
+				new Line(x + width / 3, y + height / 4, x, y), new Line(x, y, x - width / 3, y + height / 4),
+				new Line(x - width / 3, y + height / 4, x, y - height / 4) };
+
+		vertexHandle = glGenBuffers();
+		vertexBuffer = BufferUtils.createFloatBuffer(lines.length * Line.numIndividualVertices);
+		numCoordinates = Line.numCoordinates;
+		numPairVertices = lines.length * numCoordinates;
+
+		for (Line line : lines)
+		{
+			vertexBuffer.put(new float[] { line.getX1(), line.getY1(), line.getX2(), line.getY2() });
+		}
+		vertexBuffer.flip();
+
+		glBindBuffer(GL_ARRAY_BUFFER, vertexHandle);
+		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		Game.gameObjectManager.add(name, this);
 	}
 
 	public Ship(String name, float x, float y)
@@ -37,7 +57,7 @@ public class Ship extends VisibleObject
 		this.name = name;
 		this.x = x;
 		this.y = y;
-		this.vertexHandle = glGenBuffers();
+		vertexHandle = glGenBuffers();
 		Game.gameObjectManager.add(this.name, this);
 	}
 
@@ -157,10 +177,7 @@ public class Ship extends VisibleObject
 		glLoadIdentity();
 		glPushMatrix();
 		g.rotate(x, y, angle);
-		g.drawLine(x, y - height / 4, x + width / 3, y + height / 4);
-		g.drawLine(x + width / 3, y + height / 4, x, y);
-		g.drawLine(x, y, x - width / 3, y + height / 4);
-		g.drawLine(x - width / 3, y + height / 4, x, y - height / 4);
+		g.drawLines();
 		glPopMatrix();
 	}
 }

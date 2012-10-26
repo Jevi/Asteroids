@@ -1,5 +1,6 @@
 package org.cstutorials;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector2f;
 import static org.lwjgl.opengl.GL15.*;
 
@@ -24,7 +25,25 @@ public class Bullet extends VisibleObject
 		this.y = y;
 		this.angle = angle;
 		this.shipVelocity = shipVelocity;
-		this.vertexHandle = glGenBuffers();
+
+		Quad[] quads = new Quad[] { new Quad(x, y, width, height) };
+
+		vertexHandle = glGenBuffers();
+		vertexBuffer = BufferUtils.createFloatBuffer(quads.length * Quad.numIndividualVertices);
+		numCoordinates = Quad.numCoordinates;
+		numPairVertices = quads.length * numCoordinates;
+
+		for (Quad quad : quads)
+		{
+			vertexBuffer.put(new float[] { quad.getX1(), quad.getY1(), quad.getX2(), quad.getY2(), quad.getX3(), quad.getY3(),
+					quad.getX4(), quad.getY4() });
+		}
+		vertexBuffer.flip();
+
+		glBindBuffer(GL_ARRAY_BUFFER, vertexHandle);
+		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 		Game.gameObjectManager.add(this.name, this);
 	}
 
@@ -65,6 +84,6 @@ public class Bullet extends VisibleObject
 	@Override
 	public void render(Graphics g)
 	{
-		g.drawQuad(x, y, width, height);
+		g.drawQuads();
 	}
 }
