@@ -7,6 +7,8 @@ import java.nio.FloatBuffer;
 abstract public class VisibleObject
 {
 	protected String name;
+	protected float startx;
+	protected float starty;
 	protected float x;
 	protected float y;
 	protected float width;

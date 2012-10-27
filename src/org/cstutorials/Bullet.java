@@ -2,6 +2,7 @@ package org.cstutorials;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector2f;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 
 // import org.newdawn.slick.Graphics;
@@ -21,6 +22,8 @@ public class Bullet extends VisibleObject
 	public Bullet(String name, float x, float y, float angle, Vector2f shipVelocity)
 	{
 		this.name = name;
+		this.startx = x;
+		this.starty = y;
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
@@ -31,7 +34,7 @@ public class Bullet extends VisibleObject
 		vertexHandle = glGenBuffers();
 		vertexBuffer = BufferUtils.createFloatBuffer(quads.length * Quad.numIndividualVertices);
 		numCoordinates = Quad.numCoordinates;
-		numPairVertices = quads.length * numCoordinates;
+		numPairVertices = 4;
 
 		for (Quad quad : quads)
 		{
@@ -76,14 +79,19 @@ public class Bullet extends VisibleObject
 			setY(0);
 		}
 
-		x += (Math.sin(Math.toRadians(angle)) * velocity.x) + shipVelocity.x;
-		y += (-Math.cos(Math.toRadians(angle)) * velocity.y) + shipVelocity.y;
+		x += Math.sin(Math.toRadians(angle)) * velocity.x + shipVelocity.x;
+		y += -Math.cos(Math.toRadians(angle)) * velocity.y + shipVelocity.y;
 		distanceTraveled += Math.sqrt(Math.pow(velocity.x, 2) + Math.pow(velocity.y, 2));
 	}
 
 	@Override
 	public void render(Graphics g)
 	{
+		glLoadIdentity();
+		glPushMatrix();
+		glTranslatef(x - startx, y - starty, 0);
+		g.rotate(startx, starty, angle);
 		g.drawQuads();
+		glPopMatrix();
 	}
 }

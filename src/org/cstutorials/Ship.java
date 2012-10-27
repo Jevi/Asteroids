@@ -27,8 +27,11 @@ public class Ship extends VisibleObject
 	public Ship()
 	{
 		name = "Player0";
-		x = Game.DISPLAY_WIDTH / 2;
-		y = Game.DISPLAY_HEIGHT / 3;
+		startx = Game.DISPLAY_WIDTH / 2;
+		starty = Game.DISPLAY_HEIGHT / 3;
+
+		x = startx;
+		y = starty;
 
 		Line[] lines = new Line[] { new Line(x, y - height / 4, x + width / 3, y + height / 4),
 				new Line(x + width / 3, y + height / 4, x, y), new Line(x, y, x - width / 3, y + height / 4),
@@ -90,7 +93,7 @@ public class Ship extends VisibleObject
 
 	private void move()
 	{
-		if (Keyboard.isKeyDown(Keyboard.KEY_W))
+		if (Keyboard.isKeyDown(Keyboard.KEY_W) || Keyboard.isKeyDown(Keyboard.KEY_UP))
 		{
 			if (acceleration < maxAcceleration)
 			{
@@ -115,13 +118,13 @@ public class Ship extends VisibleObject
 			y += -Math.cos(Math.toRadians(angle)) * (velocity.y * acceleration);
 		}
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_A))
-		{
-			angle += angleRotation;
-		}
-		else if (Keyboard.isKeyDown(Keyboard.KEY_D))
+		if (Keyboard.isKeyDown(Keyboard.KEY_A) || Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 		{
 			angle -= angleRotation;
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_D) || Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+		{
+			angle += angleRotation;
 		}
 	}
 
@@ -176,7 +179,8 @@ public class Ship extends VisibleObject
 	{
 		glLoadIdentity();
 		glPushMatrix();
-		g.rotate(x, y, angle);
+		glTranslatef(x - startx, y - starty, 0);
+		g.rotate(startx, starty, angle);
 		g.drawLines();
 		glPopMatrix();
 	}

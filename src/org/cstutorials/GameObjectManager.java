@@ -58,7 +58,7 @@ public class GameObjectManager
 		{
 			if (name.equals(entry.getKey()))
 			{
-				System.out.println("Name: " + name + " Deleting Buffer: " + entry.getValue().vertexHandle);
+				// System.out.println("Name: " + name + " Deleting Buffer: " + entry.getValue().vertexHandle);
 				glDeleteBuffers(entry.getValue().vertexHandle);
 			}
 		}
@@ -112,7 +112,7 @@ public class GameObjectManager
 
 		for (Map.Entry<String, VisibleObject> entry : iteratableGameObjects.entrySet())
 		{
-			System.out.println("Deleting Buffer: " + entry.getValue().vertexHandle);
+			// System.out.println("Deleting Buffer: " + entry.getValue().vertexHandle);
 			glDeleteBuffers(entry.getValue().vertexHandle);
 		}
 	}
